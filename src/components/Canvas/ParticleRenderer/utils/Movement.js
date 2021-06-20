@@ -1,4 +1,4 @@
-export default class Movement {
+class Movement {
     static makeMovable(entity, { velX=0, velY=0, accX, accY, frictionX, frictionY }={}) {
         Object.assign(entity, {
             movable: true,
@@ -27,3 +27,5 @@ export default class Movement {
         entity.pos.y += entity.velY * dt
     }
 }
+
+export default Movement

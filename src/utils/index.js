@@ -1,1 +1,0 @@
-export const clamp = (min, max, val) => Math.min(Math.max(min, val), max)

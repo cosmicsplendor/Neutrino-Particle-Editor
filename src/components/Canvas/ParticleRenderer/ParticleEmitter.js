@@ -1,11 +1,11 @@
-import { Node } from "../entities"
-import Texture from "../entities/core/Texture"
-import { rand, randf, pickOne } from "../math"
-import Movement from "./Movement"
+import Node from "./entities/Node"
+import Texture from "./entities/core/Texture"
+import { rand, randf, pickOne } from "./utils/math"
+import Movement from "./utils/Movement"
 
 class Particle extends Texture {
-    constructor({ imgUrl, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn, rotation, rotationEasingFn }) {
-        super({ imgUrl })
+    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn, loop }) {
+        super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
         this.velY0 = velY
@@ -14,8 +14,7 @@ class Particle extends Texture {
         this.alpha = alpha
         this.alphaEasingFn = alphaEasingFn
         this.elapsed = 0
-        this.rotation = rotation
-        this.rotationEasingFn = rotationEasingFn
+        this.loop = loop
         Movement.makeMovable(this, { velX, velY, accX, accY })
     }
     reset() {
@@ -29,41 +28,45 @@ class Particle extends Texture {
     update(dt) {
         this.elapsed += dt
         // Math.random() < 0.1 && console.log(this.elapsed > this.lifetime)
-        if (this.elapsed > this.lifetime) {
-            // this.reset()
-            return
+        if (this.elapsed > this.lifetime && this.loop) {
+            this.reset()
         }
         Movement.update(this, dt)
         if (this.alphaEasingFn) {
             this.alpha = this.alphaEasingFn(this.elapsed / this.lifetime)
         }
-        if (this.rotationEasingFn) {
-            this.rotation = this.rotationEasingFn(this.elapsed / this.lifetime)
-        }
     }
 }
 
 /**
- * const params = [
- *     { frame, offsetX = 0, offsetY = 0, lifetime: [ 2, 5 ], velX, velY, accX, accY, alpha, alphaEasingFn, rotation, rotationEasingFn, weight = 1 },
- *     { frame, offsetX = 0, offsetY = 0, lifetime: [ 4, 8 ], velX, velY, accX, accY, alpha, alphaEasingFn, rotation, rotationEasingFn, weight = 1 },
+ * const types = [
+ *     { frame, offsetX = 0, offsetY = 0, lifetime: [ 2, 5 ], velX, velY, accX, accY, alpha, alphaEasingFn, weight = 1 },
+ *     { frame, offsetX = 0, offsetY = 0, lifetime: [ 4, 8 ], velX, velY, accX, accY, alpha, alphaEasingFn, weight = 1 },
  * ]
  */
 
 class ParticleEmitter extends Node {
-    constructor({ size, blendMode, metaId, imgId, params, ...nodeProps }) {
+    constructor({ size, blendMode, loop = false, randomDistribution = true, params, ...nodeProps }) {
         super({ ...nodeProps })
         this.blendMode = blendMode
-        const weightedParamsIndices = params.reduce((distribution, param, index) => {
-            return distribution.concat(Array(param.weight || 1).fill(index))
-        },[])
+        let paramIndices
+        if (randomDistribution) {
+            paramIndices = params.reduce((distribution, param, index) => {
+                return distribution.concat(Array(param.weight || 1).fill(index))
+            },[])
+        } else {
+            const sumOfWeights = params.reduce((prevTotal, param) => {
+                return prevTotal + (param.weight || 1)
+            }, 0)
+            paramIndices = params.reduce((prevIndices, param, index) => {
+                return prevIndices.concat(Array(Math.round(size * (param.weight || 1) / sumOfWeights)).fill(index))
+            }, [])
+        }
         for (let i = 0; i < size; i++) {
-            const index = pickOne(weightedParamsIndices)
+            const index = randomDistribution ? pickOne(paramIndices): paramIndices[i]
             const param = params[index]
             const deserializedParam = {
-                metaId,
-                imgId,
-                frame: param.frame,
+                imgUrl: param.img,
                 pos: {
                     x: Array.isArray(param.offsetX) ? rand(param.offsetX[0], param.offsetX[1]): param.offsetX || 0,
                     y: Array.isArray(param.offsetY) ? rand(param.offsetY[0], param.offsetY[1]): param.offsetY || 0,
@@ -74,7 +77,8 @@ class ParticleEmitter extends Node {
                 accX: Array.isArray(param.accX) ? rand(param.accX[0], param.accX[1]): param.accX,
                 accY: Array.isArray(param.accY) ? rand(param.accY[0], param.accY[1]): param.accY,
                 alpha: Array.isArray(param.alpha) ? rand(param.alpha[0], param.alpha[1]): param.alpha,
-                alphaEasingFn: param.alphaEasingFn
+                alphaEasingFn: param.alphaEasingFn,
+                loop
             }
             this.add(new Particle(deserializedParam))
         }
