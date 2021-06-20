@@ -2,7 +2,7 @@ import * as types from "../entities/core/types"
 
 class Canvas2DRenderer {
     constructor({ canvasId, canvas, scene }) {
-        this.canvas = !!canvas ? canvas: document.querySelector(`#${canvasId}`)
+        this.canvas = !!canvas ? canvas: document.getElementById(canvasId)
         this.scene = scene
         this.ctx = this.canvas.getContext("2d")
     }
@@ -11,11 +11,11 @@ class Canvas2DRenderer {
         const { type, pos, scale, pivot, rotation, anchor } = node
         
         ctx.translate(pos.x, pos.y)
-        ctx.translate(anchor.x, anchor.y)
-        ctx.rotate(Math.PI * rotation / 180)
-        ctx.translate(-anchor.x, -anchor.y)
-        ctx.translate(pivot.x, pivot.y)
-        ctx.scale(scale.x, scale.y)
+        scale && ctx.translate(anchor.x, anchor.y)
+        rotation && ctx.rotate(Math.PI * rotation / 180)
+        anchor && ctx.translate(-anchor.x, -anchor.y)
+        pivot && ctx.translate(pivot.x, pivot.y)
+        scale && ctx.scale(scale.x, scale.y)
         
         switch(type) {
             case types.texture:
@@ -42,7 +42,10 @@ class Canvas2DRenderer {
     }
     renderRecursively(node) {
         node = node || this.scene
+        if (node === this.scene) { this.clear() }
         this.ctx.save()
+        if (node.alpha) { this.ctx.globalAlpha = node.alpha }
+        if (node.blendMode) { this.ctx.globalCompositeOperation = node.blendMode }
         this.render(node)
         for (const childNode of node.children) {
             this.renderRecursively(childNode)

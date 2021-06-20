@@ -1,13 +1,4 @@
-import { useState, useReducer, useCallback, useMemo } from "react"
-
-export const sortingFns = [
-    "max-side",
-    "perimeter",
-    "area",
-    "diagonal",
-    "width",
-    "height",
-]
+import { useState, useCallback, useMemo } from "react"
 
 export const blendModes = [
     "none",
@@ -41,9 +32,7 @@ export default () => {
     const [ blendMode, setBlendMode ] = useState(initialSettings.blendMode)
     const [ distribution, setDistribution ] = useState(initialSettings.distribution)
     const [ loop, setLoop ] = useState(initialSettings.loop)
-    const [ numOfParticles, updateNumOfParticles ] = useReducer((prevMargin, update) => {
-        return { ...prevMargin, ...update }
-    }, initialSettings.numOfParticles)
+    const [ numOfParticles, setNumOfParticles ] = useState(initialSettings.numOfParticles)
 
     const updateSettings = useCallback(({ blendMode, distribution, loop, numOfParticles }) => {
         if (!!blendMode) {
@@ -56,7 +45,7 @@ export default () => {
             return setLoop(loop)
         }
         if (!!numOfParticles) {
-            return updateNumOfParticles(numOfParticles)
+            return setNumOfParticles(numOfParticles)
         }
     }, [])
 

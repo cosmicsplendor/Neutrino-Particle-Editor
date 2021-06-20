@@ -1,12 +1,10 @@
 import { useContext, useCallback } from "react"
 import { DownloadOutlined } from "@ant-design/icons"
-import { Button, Space, Typography } from "antd"
+import { Button, Typography } from "antd"
 const { Text } = Typography
 
-import Panel from "../UIPrimitives/Panel"
-import * as download from "../../utils/download"
+import * as download from "./download"
 import AppContext from "../../AppContext"
-import texAtlas from "../../utils/texAtlas"
 import styles from "../SidePanel/style.css"
 
 export default () => {

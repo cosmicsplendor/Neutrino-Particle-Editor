@@ -1,4 +1,4 @@
-const startGameLoop = ({ mainUpdateFn, renderer, step = 100 }) => {
+const startGameLoop = ({ mainUpdateFn=() => {}, renderer, step = 100 }) => {
     const STEP = step // max frame duration
     let lastTs = 0
     let speed = 1
@@ -9,7 +9,7 @@ const startGameLoop = ({ mainUpdateFn, renderer, step = 100 }) => {
         const tsInSecs = ts / 1000
         lastTs = ts
         if (paused) { return }
-        renderer.scene.updateRecursively(renderer.scene, dt, tsInSecs, renderer.scene)
+        renderer.scene.updateRecursively(dt, tsInSecs)
         mainUpdateFn(dt, tsInSecs)
         renderer.renderRecursively()
         requestAnimationFrame(loop)

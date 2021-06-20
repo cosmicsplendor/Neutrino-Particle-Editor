@@ -27,7 +27,7 @@ export default () => {
                     <div>
                         <Space direction="vertical">
                             <Text type="secondary">blend mode</Text>
-                            <Select value={blendMode} className={styles.select} onChange={value => updateSettings({ blendMode: value })} size="large">
+                            <Select value={blendMode} style={{ width: 150 }} onChange={value => updateSettings({ blendMode: value })} size="large">
                                 {blendModes.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
                             </Select>
                         </Space>
@@ -44,7 +44,9 @@ export default () => {
                         <Space direction="vertical">
                             <Text type="secondary">number of particles</Text>
                             <Space>
-                                <InputNumber className={styles.input} value={numOfParticles} onChange={e => updateSettings({ numOfParticles: { y: Number.parseInt(e.target.value || 0) }})}/>
+                                <InputNumber className={styles.input} value={numOfParticles} onChange={value => {
+                                    updateSettings({ numOfParticles: Number.parseInt(value || 0) })
+                                }}/>
                             </Space>
                         </Space>
                     </div>

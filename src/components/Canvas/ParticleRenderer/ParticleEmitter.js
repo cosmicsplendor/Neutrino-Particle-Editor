@@ -4,7 +4,7 @@ import { rand, randf, pickOne } from "./utils/math"
 import Movement from "./utils/Movement"
 
 class Particle extends Texture {
-    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn, loop }) {
+    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn = x => 1 - x, loop }) {
         super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
@@ -46,7 +46,7 @@ class Particle extends Texture {
  */
 
 class ParticleEmitter extends Node {
-    constructor({ size, blendMode, loop = false, randomDistribution = true, params, ...nodeProps }) {
+    constructor({ size, blendMode, randomDistribution = true, params, ...nodeProps }) {
         super({ ...nodeProps })
         this.blendMode = blendMode
         let paramIndices
@@ -66,7 +66,7 @@ class ParticleEmitter extends Node {
             const index = randomDistribution ? pickOne(paramIndices): paramIndices[i]
             const param = params[index]
             const deserializedParam = {
-                imgUrl: param.img,
+                imgUrl: param.src,
                 pos: {
                     x: Array.isArray(param.offsetX) ? rand(param.offsetX[0], param.offsetX[1]): param.offsetX || 0,
                     y: Array.isArray(param.offsetY) ? rand(param.offsetY[0], param.offsetY[1]): param.offsetY || 0,
@@ -76,9 +76,9 @@ class ParticleEmitter extends Node {
                 velY: Array.isArray(param.velY) ? rand(param.velY[0], param.velY[1]): param.velY,
                 accX: Array.isArray(param.accX) ? rand(param.accX[0], param.accX[1]): param.accX,
                 accY: Array.isArray(param.accY) ? rand(param.accY[0], param.accY[1]): param.accY,
-                alpha: Array.isArray(param.alpha) ? rand(param.alpha[0], param.alpha[1]): param.alpha,
+                alpha: Array.isArray(param.alpha) ? randf(param.alpha[0], param.alpha[1]): param.alpha,
                 alphaEasingFn: param.alphaEasingFn,
-                loop
+                loop: true
             }
             this.add(new Particle(deserializedParam))
         }
