@@ -2,9 +2,18 @@ import { useCallback, useReducer } from "react"
 import * as importAxnTypes from "../constants/actionTypes/imports"
 import { v4 } from "uuid"
 
-const initialProperties = { 
-    offsetX: [ 0, 0 ], offsetY: [ 0, 0 ], lifetime: [ 1, 2 ], velX: [ -15, 15 ], velY: [ -15, 15 ], accX: [ 0, 0 ], accY: [ 0, 0 ], alpha: [ 1, 1 ], alphaEasingFn: "x => 1 - x", rotation: [ 0, 0 ], rotationEasingFn: "x => x * 2 * Math.PI", weight: 1
+export const initialProperties = { 
+    offsetX: [ 0, 0 ], offsetY: [ 0, 0 ], lifetime: [ 1, 2 ], velX: [ -15, 15 ], velY: [ -15, 15 ], accX: [ 0, 0 ], accY: [ 0, 0 ], alpha: [ 1, 1 ], alphaDecayFn: "", rotation: [ 0, 0 ], angularVel: [ 0, 0 ], weight: 1
 }
+
+export const alphaDecayFns = [
+    "none",
+    "linear",
+    "quadIn",
+    "cubicIn",
+    "quadOut",
+    "cubicOut"
+]
 
 export default () => {
     const [ imports, setImports ] = useReducer((prevImports, action) => {

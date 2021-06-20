@@ -2,7 +2,7 @@ import Node from "./entities/Node"
 import Canvas2DRenderer from "./renderer/Canvas2D"
 import Texture from "./entities/core/Texture"
 import packRects from "../packer"
-import { PREVIEW_ID, HBOX_SLIDER_W } from "../../constants"
+import { PREVIEW_ID } from "../../constants"
 
 const spriteToTexture = ({ src, name, id, hitboxSlider }) => {
     const tex = new Texture({ imgUrl: src })
@@ -16,12 +16,6 @@ const spriteToTexture = ({ src, name, id, hitboxSlider }) => {
         const maxDim = Math.max(width, height)
         const offsetX = - (maxDim - width) / 2
         const offsetY = - (maxDim - height) / 2
-        tex.hitbox = {
-            x: round(x1 * width / HBOX_SLIDER_W) + offsetX,
-            y: round(y1 * height / HBOX_SLIDER_W) + offsetY,
-            width: round((x2 - x1) * width / HBOX_SLIDER_W),
-            height: round((y2 - y1) * height / HBOX_SLIDER_W)
-        }
     }
     tex.id = id
     return tex

@@ -1,8 +1,8 @@
 import { useContext } from "react"
-import { Select, Input, Typography, Space, Switch } from "antd"
+import { Select, InputNumber, Typography, Space, Switch } from "antd"
 
 import Panel from "../UIPrimitives/Panel"
-import { sortingFns, metaFormats } from "../../hooks/useSettings"
+import { distributions, blendModes } from "../../hooks/useSettings"
 import AxnBtn from "./AxnBtn"
 import AppContext from "../../AppContext"
 import styles from "../SidePanel/style.css"
@@ -12,10 +12,10 @@ const { Option } = Select
 
 export default () => {
     const { settings: {
-        sortingFn,
-        metaFormat,
-        margin,
-        rotationEnabled
+        blendMode,
+        distribution,
+        numOfParticles,
+        loop
     }, updateSettings } = useContext(AppContext)
     return (
         <Panel className={styles.sidePanel}>
@@ -26,33 +26,32 @@ export default () => {
             <Space direction="vertical">
                     <div>
                         <Space direction="vertical">
-                            <Text type="secondary">rect sorting function</Text>
-                            <Select value={sortingFn} className={styles.select} onChange={value => updateSettings({ sortingFn: value })} size="large">
-                                {sortingFns.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
+                            <Text type="secondary">blend mode</Text>
+                            <Select value={blendMode} className={styles.select} onChange={value => updateSettings({ blendMode: value })} size="large">
+                                {blendModes.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
                             </Select>
                         </Space>
                     </div>
                     <div>
                         <Space direction="vertical">
-                            <Text type="secondary">export metadata format</Text>
-                            <Select value={metaFormat} className={styles.select} onChange={value => updateSettings({ metaFormat: value })}>
-                                {metaFormats.map((name, i) => <Option key={i} value={name}>JSON {name}</Option>)}
+                            <Text type="secondary">particle type distribution</Text>
+                            <Select value={distribution} className={styles.select} onChange={value => updateSettings({ distribution: value })}>
+                                {distributions.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
                             </Select>
                         </Space>
                     </div>
                     <div>
                         <Space direction="vertical">
-                            <Text type="secondary">margin around the sprite</Text>
+                            <Text type="secondary">number of particles</Text>
                             <Space>
-                                <Input className={styles.input} addonBefore="x" value={margin.x} addonAfter="px" onChange={e => updateSettings({ margin: { x: Number.parseInt(e.target.value || 0) }})}/>
-                                <Input className={styles.input} addonBefore="y" value={margin.y} addonAfter="px" onChange={e => updateSettings({ margin: { y: Number.parseInt(e.target.value || 0) }})}/>
+                                <InputNumber className={styles.input} value={numOfParticles} onChange={e => updateSettings({ numOfParticles: { y: Number.parseInt(e.target.value || 0) }})}/>
                             </Space>
                         </Space>
                     </div>
                     <div>
                         <Space>
-                            <Text type="secondary">Sprite Rotation</Text>
-                            <Switch checked={rotationEnabled} onChange={checked => updateSettings({ rotationEnabled: checked })}/>
+                            <Text type="secondary">Loop</Text>
+                            <Switch checked={loop} onChange={checked => updateSettings({ loop: checked })}/>
                         </Space>
                     </div>
                     <AxnBtn />

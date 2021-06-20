@@ -14,7 +14,7 @@ const  App = () => {
                 ghost={false}
                 backIcon=""
                 onBack={() => {}}
-                title="Particle Designer"
+                title="Particle Editor"
                 subTitle="made for"
                 tags={<Tag color="grey" style={{ cursor: "pointer" }}>Neutrino.js</Tag>}
                 extra={

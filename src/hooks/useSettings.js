@@ -9,47 +9,60 @@ export const sortingFns = [
     "height",
 ]
 
-export const metaFormats = [
-    "Hash",
-    "Array"
+export const blendModes = [
+    "none",
+    "multiply",
+    "exclusion",
+    "lighten",
+    "darken",
+    "difference",
+    "xor",
+    "hue",
+    "color",
+    "saturation",
+    "luminosity",
+    "color-burn",
+    "color-dodge"
+]
+
+export const distributions = [
+    "random",
+    "proportionate"
 ]
 
 const initialSettings = {
-    sortingFn: sortingFns[0],
-    metaFormat: metaFormats[0],
-    margin: {
-        x: 0,
-        y: 0
-    },
-    rotationEnabled: true
+    blendMode:"",
+    distribution: distributions[0],
+    numOfParticles: 40,
+    loop: false
 }
 
 export default () => {
-    const [ sortingFn, setSortingFn ] = useState(initialSettings.sortingFn)
-    const [ metaFormat, setMetaFormat ] = useState(initialSettings.metaFormat)
-    const [ rotationEnabled, setRotationEnabled ] = useState(initialSettings.rotationEnabled)
-    const [ margin, updateMargin ] = useReducer((prevMargin, update) => {
+    const [ blendMode, setBlendMode ] = useState(initialSettings.blendMode)
+    const [ distribution, setDistribution ] = useState(initialSettings.distribution)
+    const [ loop, setLoop ] = useState(initialSettings.loop)
+    const [ numOfParticles, updateNumOfParticles ] = useReducer((prevMargin, update) => {
         return { ...prevMargin, ...update }
-    }, initialSettings.margin)
+    }, initialSettings.numOfParticles)
 
-    const updateSettings = useCallback(({ sortingFn, metaFormat, rotationEnabled, margin }) => {
-        if (!!sortingFn) {
-            return setSortingFn(sortingFn)
+    const updateSettings = useCallback(({ blendMode, distribution, loop, numOfParticles }) => {
+        if (!!blendMode) {
+            return setBlendMode(blendMode)
         }
-        if (!!metaFormat) {
-            return setMetaFormat(metaFormat)
+        if (!!distribution) {
+            return setDistribution(distribution)
         }
-        if (typeof rotationEnabled !== "undefined" && typeof rotationEnabled !== "null") {
-            return setRotationEnabled(rotationEnabled)
+        if (typeof loop !== "undefined" && typeof loop !== "null") {
+            return setLoop(loop)
         }
-        if (!!margin) {
-            return updateMargin(margin)
+        if (!!numOfParticles) {
+            return updateNumOfParticles(numOfParticles)
         }
     }, [])
 
     const settings = useMemo(() => {
-        return { sortingFn, metaFormat, rotationEnabled, margin }
-    }, [ sortingFn, metaFormat, rotationEnabled, margin])
+        return { blendMode, distribution, loop, numOfParticles }
+    }, [ blendMode, distribution, loop, numOfParticles])
 
     return [
         settings,

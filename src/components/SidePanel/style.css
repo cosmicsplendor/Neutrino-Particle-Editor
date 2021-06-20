@@ -16,6 +16,11 @@
     flex-direction: row-reverse;
 }
 
+.metaPanel {
+    display: flex;
+    flex-direction: column;
+}
+
 .axnBtn {
     margin-top: 1em;
 }

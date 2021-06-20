@@ -1,7 +1,8 @@
 import { useContext, useMemo, useCallback } from "react"
-import { Space, notification, Typography, Input, Select, Slider } from "antd"
+import { Space, notification, Typography, Input, Select, InputNumber } from "antd"
 
 import AppContext from ".././../AppContext"
+import { initialProperties as defaultProperties, alphaDecayFns } from "../../hooks/useImports"
 import ParticleProperty from "./ParticleProperty"
 import placeholderImg from "../../images/placeholder.png"
 import styles from "./style.css"
@@ -19,10 +20,6 @@ const hitboxEditorImgStyle = {
 const { Text } = Typography
 const { Option } = Select
 
-const defaultProperties = { 
-    offsetX: [ 0, 0 ], offsetY: [ 0, 0 ], lifetime: [ 1, 2 ], velX: [ -15, 15 ], velY: [ -15, 15 ], accX: [ 0, 0 ], accY: [ 0, 0 ], alpha: [ 1, 1 ], alphaEasingFn: "x => 1 - x", rotation: [ 0, 0 ], rotationEasingFn: "x => x * 2 * Math.PI", weight: 1
-}
-
 export default () => {
     const { activeSprite: activeSpriteID, imports, importAxns } = useContext(AppContext)
     const activeSprite = useMemo(() => {
@@ -32,17 +29,15 @@ export default () => {
     const { 
         src: spriteImg, 
         name,
-        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn, rotation, rotationEasingFn, weight 
+        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn, rotation, angularVel, weight 
     } = inputsDisabled ? defaultProperties: activeSprite
-    console.log(offsetX)
-    console.log(inputsDisabled ? defaultProperties: activeSprite)
     return (
-        <div>
-            <div className={styles.sectionHeader}>
-                Particle Properties
-            </div>
-            <Space>
-                <Space direction="vertical">
+        <div className={styles.metaPanel}>
+            <Space direction="vertical">
+                <div className={styles.sectionHeader}>
+                    Particle Properties
+                </div>
+                <Space direction="horizontal">
                    <div className={styles.hitboxEditor} style={hitboxEditorStyle}>
                         <img 
                             className={styles.metaImage} 
@@ -51,9 +46,7 @@ export default () => {
                         />
                         {/* <div className={styles.hitbox} style={hitboxElStyle}/> */}
                    </div>
-                </Space>
-                <Space direction="vertical">
-                    <Space direction="vertical">
+                   <Space direction="vertical">
                         <Text type="secondary">Texture Name</Text>
                         <Input 
                             className={styles.input} 
@@ -76,17 +69,28 @@ export default () => {
                         />
                     </Space>
                 </Space>
-            </Space>
-            <Space direction="vertical" style={{ marginTop: "1em" }}>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="offsetX" value={offsetX} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="offsetY" value={offsetY} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="lifetime" value={lifetime} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="velX" label="velocityX" value={velX} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="velY" label="velocityY" value={velY} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="accX" label="gravityX" value={accX} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="accY" label="gravityY" value={accY} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="rotation" value={rotation} update={importAxns.update} disabled={inputsDisabled}/>
-                <ParticleProperty activeSpriteID={activeSpriteID} name="alpha" value={alpha} update={importAxns.update} disabled={inputsDisabled}/>
+                <Space direction="horizontal">
+                    <Text type="secondary">distribution weight</Text>
+                    <InputNumber value={weight} onChange={value => importAxns.update({ id: activeSpriteID, weight: value })} disabled={inputsDisabled}/>
+                </Space>
+                <Space direction="horizontal">
+                    <Text type="secondary">alpha decay function</Text>
+                    <Select value={alphaDecayFn} className={styles.select} onChange={value => importAxns.update({ id: activeSpriteID, alphaDecayFn: value })} size="large" disabled={inputsDisabled}>
+                        {alphaDecayFns.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
+                    </Select>
+                </Space>
+                <Space direction="vertical" style={{ marginTop: "1em" }}>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="offsetX" value={offsetX} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="offsetY" value={offsetY} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="lifetime" value={lifetime} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="velX" label="velocityX" value={velX} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="velY" label="velocityY" value={velY} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="accX" label="gravityX" value={accX} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="accY" label="gravityY" value={accY} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="rotation" value={rotation} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="angularVel" value={angularVel} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="alpha" value={alpha} update={importAxns.update} disabled={inputsDisabled}/>
+                </Space>
             </Space>
         </div>
     )
