@@ -1,0 +1,60 @@
+.input, .select {
+    width: 120px;
+}
+
+.inputSm {
+    width: 100px;
+}
+
+.dropDown {
+    width: 150px;
+}
+
+.sidePanel {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.axnBtn {
+    margin-top: 1em;
+}
+
+.hitboxEditor {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: whitesmoke;
+    border-radius: 15px;
+}
+
+.hitboxEditor>.hitbox {
+    position: absolute;
+    box-sizing: border-box;
+    border: 2px solid rgba(50, 115, 220, 0.6);
+    background: rgba(50, 115, 220, 0.2);
+    width: 50px;
+    height: 50px;
+}
+
+.hitboxEditor>.hSlider {
+    position: absolute; 
+    top: -15px; 
+}
+
+.hitboxEditor>.vSlider {
+    position: absolute;
+    left: -15px;
+}
+
+.metaImage {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    background: url("../../images/checkerboard.png")
+}
+
+.sectionHeader {
+    font-weight: bold;
+    font-size: 1em;
+}

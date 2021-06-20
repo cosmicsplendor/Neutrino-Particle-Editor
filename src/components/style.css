@@ -1,0 +1,18 @@
+.upperSection {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 0.5em 0;
+}
+.preview {
+    flex: 1;
+    background: #333;
+}
+.previewImg {
+    background: transparent;
+    object-fit: scale-down;
+    object-position: 0 0;
+}
+.appbar {
+    width: 90%;
+}

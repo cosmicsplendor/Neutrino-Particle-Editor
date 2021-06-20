@@ -1,0 +1,93 @@
+import { useContext, useMemo, useCallback } from "react"
+import { Space, notification, Typography, Input, Select, Slider } from "antd"
+
+import AppContext from ".././../AppContext"
+import ParticleProperty from "./ParticleProperty"
+import placeholderImg from "../../images/placeholder.png"
+import styles from "./style.css"
+import { HBOX_EDITOR_W, HBOX_EDITOR_IMG_W } from "../../constants"
+
+const hitboxEditorStyle = {
+    width: HBOX_EDITOR_W,
+    height: HBOX_EDITOR_W 
+}
+const hitboxEditorImgStyle = {
+    width: HBOX_EDITOR_IMG_W,
+    height: HBOX_EDITOR_IMG_W
+}
+
+const { Text } = Typography
+const { Option } = Select
+
+const defaultProperties = { 
+    offsetX: [ 0, 0 ], offsetY: [ 0, 0 ], lifetime: [ 1, 2 ], velX: [ -15, 15 ], velY: [ -15, 15 ], accX: [ 0, 0 ], accY: [ 0, 0 ], alpha: [ 1, 1 ], alphaEasingFn: "x => 1 - x", rotation: [ 0, 0 ], rotationEasingFn: "x => x * 2 * Math.PI", weight: 1
+}
+
+export default () => {
+    const { activeSprite: activeSpriteID, imports, importAxns } = useContext(AppContext)
+    const activeSprite = useMemo(() => {
+        return imports.find(({ id }) => activeSpriteID === id) || {}
+    }, [ activeSpriteID, imports ])
+    const inputsDisabled = !Boolean(activeSpriteID)
+    const { 
+        src: spriteImg, 
+        name,
+        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn, rotation, rotationEasingFn, weight 
+    } = inputsDisabled ? defaultProperties: activeSprite
+    console.log(offsetX)
+    console.log(inputsDisabled ? defaultProperties: activeSprite)
+    return (
+        <div>
+            <div className={styles.sectionHeader}>
+                Particle Properties
+            </div>
+            <Space>
+                <Space direction="vertical">
+                   <div className={styles.hitboxEditor} style={hitboxEditorStyle}>
+                        <img 
+                            className={styles.metaImage} 
+                            src={spriteImg || placeholderImg} 
+                            style={hitboxEditorImgStyle}
+                        />
+                        {/* <div className={styles.hitbox} style={hitboxElStyle}/> */}
+                   </div>
+                </Space>
+                <Space direction="vertical">
+                    <Space direction="vertical">
+                        <Text type="secondary">Texture Name</Text>
+                        <Input 
+                            className={styles.input} 
+                            value={name} placeholder="not selected" 
+                            onChange={e => {
+                                const newName = e.target.value
+                                const duplicate = !!imports.some(({ name }) => {
+                                    return name === newName
+                                })
+                                if (duplicate) {
+                                    notification.open({
+                                        message: "Clashing Names",
+                                        description: `"${newName}" clashes with the name of one of the imported textures. Name field has to be unique.`
+                                    })
+                                    return
+                                }
+                                importAxns.update({ id: activeSpriteID, name: newName})
+                            }} 
+                            disabled={inputsDisabled}
+                        />
+                    </Space>
+                </Space>
+            </Space>
+            <Space direction="vertical" style={{ marginTop: "1em" }}>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="offsetX" value={offsetX} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="offsetY" value={offsetY} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="lifetime" value={lifetime} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="velX" label="velocityX" value={velX} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="velY" label="velocityY" value={velY} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="accX" label="gravityX" value={accX} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="accY" label="gravityY" value={accY} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="rotation" value={rotation} update={importAxns.update} disabled={inputsDisabled}/>
+                <ParticleProperty activeSpriteID={activeSpriteID} name="alpha" value={alpha} update={importAxns.update} disabled={inputsDisabled}/>
+            </Space>
+        </div>
+    )
+}
