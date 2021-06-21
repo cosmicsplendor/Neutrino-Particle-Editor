@@ -5,17 +5,35 @@ import ParticleEmitter from "./ParticleEmitter"
 import mapSliderInputsToParams from "../../../helpers/mapSliderInputsToParams"
 
 class ParticleRenderer {
-    constructor(canvasId) {
+    constructor(canvasId, updateFrequency = 1) {
         this.rootNode = new Node()
         this.renderer = new Canvas2DRenderer({ canvasId, scene: this.rootNode })
-        this.loopControls = startGameLoop({ renderer: this.renderer })
+        this.loopControls = startGameLoop({ mainUpdateFn: this.update.bind(this), renderer: this.renderer })
+        this.updateFrequency = updateFrequency
+        this.timeSinceStart = 0
+        this.lastUpdated = 0
+        this.dirty = false
     }
-    setParams({ params, ...rest}) {
+    setParams({ params, ...rest} = this.unduePayload) {
+        if (this.timeSinceStart - this.lastUpdated < this.updateFrequency) {
+            this.unduePayload = { params, ...rest }
+            this.dirty = true
+            return
+        }
+        console.log("updating")
+        this.dirty = false
+        this.lastUpdated = this.timeSinceStart
         const newEmitter = new ParticleEmitter({ params: mapSliderInputsToParams(params), ...rest })
         newEmitter.pos.x = this.renderer.canvas.width / 2
         newEmitter.pos.y = this.renderer.canvas.height / 2
         this.rootNode.children.length = 0
         this.rootNode.add(newEmitter)
+    }
+    update(dt) {
+        this.timeSinceStart += dt
+        if (this.dirty) { 
+            this.setParams()
+        }
     }
 }
 

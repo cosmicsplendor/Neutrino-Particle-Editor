@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from "react"
 
 export const blendModes = [
-    "none",
+    "source-over",
     "multiply",
     "exclusion",
     "lighten",
@@ -22,7 +22,7 @@ export const distributions = [
 ]
 
 const initialSettings = {
-    blendMode:"",
+    blendMode:"source-over",
     distribution: distributions[distributions.length - 1],
     numOfParticles: 40,
     loop: false
