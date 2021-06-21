@@ -45,7 +45,7 @@ export default () => {
                             <Text type="secondary">number of particles</Text>
                             <Space>
                                 <InputNumber className={styles.input} value={numOfParticles} onChange={value => {
-                                    updateSettings({ numOfParticles: Number.parseInt(value || 0) })
+                                    updateSettings({ numOfParticles: Number.parseInt(value) || 0 })
                                 }}/>
                             </Space>
                         </Space>
