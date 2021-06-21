@@ -1,6 +1,6 @@
 const paramsRange = Object.freeze({
-    offsetX: [ -2000, 2000 ],
-    offsetY: [ -2000, 2000 ],
+    offsetX: [ -500, 500 ],
+    offsetY: [ -500, 500 ],
     lifetime: [ 0, 10 ],
     velX: [ -100, 100 ],
     velY: [ -100, 100 ],
@@ -17,8 +17,8 @@ const interpolate = (range, percent, round) => {
     return round ? Math.round(output): output
 } 
 export default inputs => {
-    return inputs.map(({ alphaDecayFn = "", src, weight, ...rest }) => {
-        const mappedVal = { alphaDecayFn, weight, imgUrl: src }
+    return inputs.map(({ alphaDecayFn = "", name, src, weight, ...rest }) => {
+        const mappedVal = { alphaDecayFn, weight, imgUrl: src, frame: name }
         const restOfTheProps = Object.keys(rest)
         restOfTheProps.forEach(prop => {
             const range = paramsRange[prop]
