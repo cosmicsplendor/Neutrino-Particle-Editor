@@ -23,7 +23,7 @@ export const distributions = [
 
 const initialSettings = {
     blendMode:"",
-    distribution: distributions[0],
+    distribution: distributions[distributions.length - 1],
     numOfParticles: 40,
     loop: false
 }

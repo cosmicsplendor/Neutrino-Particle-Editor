@@ -66,7 +66,7 @@ class ParticleEmitter extends Node {
             const index = randomDistribution ? pickOne(paramIndices): paramIndices[i]
             const param = params[index]
             const deserializedParam = {
-                imgUrl: param.src,
+                imgUrl: param.imgUrl,
                 pos: {
                     x: Array.isArray(param.offsetX) ? rand(param.offsetX[0], param.offsetX[1]): param.offsetX || 0,
                     y: Array.isArray(param.offsetY) ? rand(param.offsetY[0], param.offsetY[1]): param.offsetY || 0,
