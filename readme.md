@@ -2,7 +2,7 @@
 ![App Screenhot](https://github.com/xtropia/Neutrino-Particle-Editor/blob/master/src/images/screenShot.png)
 This is a free web-based gui application for authoring particle systems, which can be exported to be used in Neutrino game engine.
 
-"start" npm script can be used to spin up a dev server:
+"start" npm script spins up the dev server:
 
 ```
 npm start
