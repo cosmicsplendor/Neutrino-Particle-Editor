@@ -62,15 +62,15 @@ class ParticleEmitter extends Node {
             const deserializedParam = {
                 imgUrl: param.imgUrl,
                 pos: {
-                    x: Array.isArray(param.offsetX) ? rand(param.offsetX[0], param.offsetX[1]): param.offsetX || 0,
-                    y: Array.isArray(param.offsetY) ? rand(param.offsetY[0], param.offsetY[1]): param.offsetY || 0,
+                    x:  rand(param.offsetX[0], param.offsetX[1]),
+                    y:  rand(param.offsetY[0], param.offsetY[1]),
                 },
-                lifetime: Array.isArray(param.lifetime) ? randf(param.lifetime[0], param.lifetime[1]): param.lifetime,
-                velX: Array.isArray(param.velX) ? rand(param.velX[0], param.velX[1]): param.velX,
-                velY: Array.isArray(param.velY) ? rand(param.velY[0], param.velY[1]): param.velY,
-                accX: Array.isArray(param.accX) ? rand(param.accX[0], param.accX[1]): param.accX,
-                accY: Array.isArray(param.accY) ? rand(param.accY[0], param.accY[1]): param.accY,
-                alpha: Array.isArray(param.alpha) ? randf(param.alpha[0], param.alpha[1]): param.alpha,
+                lifetime:  randf(param.lifetime[0], param.lifetime[1]),
+                velX:  rand(param.velX[0], param.velX[1]),
+                velY:  rand(param.velY[0], param.velY[1]),
+                accX:  rand(param.accX[0], param.accX[1]),
+                accY:  rand(param.accY[0], param.accY[1]),
+                alpha:  randf(param.alpha[0], param.alpha[1]),
                 alphaDecayFn: param.alphaDecayFn,
                 loop: true
             }
