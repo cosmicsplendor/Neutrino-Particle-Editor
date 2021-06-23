@@ -27,7 +27,6 @@ class Particle extends Texture {
     }
     update(dt) {
         this.elapsed += dt
-        // Math.random() < 0.1 && console.log(this.elapsed > this.lifetime)
         if (this.elapsed > this.lifetime && this.loop) {
             this.reset()
         }

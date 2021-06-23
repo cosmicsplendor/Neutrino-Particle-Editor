@@ -13,9 +13,12 @@ export default () => {
 
     const downloadMeta = useCallback(() => {
         if (imports.length === 0) return
+        console.log(imports)
         const exports = { ...settings, params: mapSliderInputsToParams(imports) }
         exports.params.forEach(param => delete param.imgUrl)
         exports.randomDistribution = exports.distribution === "random"
+        exports.size = exports.numOfParticles
+        delete exports.numOfParticles
         delete exports.distribution
 
         const body = JSON.stringify(exports, null, 4)

@@ -12,24 +12,31 @@ const paramsRange = Object.freeze({
 })
 
 const floatProps = [ "alpha", "lifetime" ]
+
 const interpolate = (range, percent, round) => {
     const output = range[0] + (range[1] - range[0]) * percent / 100
     return round ? Math.round(output): output
 } 
+
+export const mapToWorldValues = props => {
+    const propNames = Object.keys(props)
+    const mappedVal = { }
+    propNames.forEach(propName => {
+        const range = paramsRange[propName]
+        const val = props[propName]
+        if (!range) { return }
+        const roundValues = !floatProps.includes(propName)
+        mappedVal[propName] = [
+            interpolate(range, val[0], roundValues),
+            interpolate(range, val[1], roundValues),
+        ]
+    })
+    return mappedVal
+}
+
 export default inputs => {
-    return inputs.map(({ alphaDecayFn = "", name, src, weight, ...rest }) => {
-        const mappedVal = { alphaDecayFn, weight, imgUrl: src, frame: name }
-        const restOfTheProps = Object.keys(rest)
-        restOfTheProps.forEach(prop => {
-            const range = paramsRange[prop]
-            const val = rest[prop]
-            if (!range) { return }
-            const roundValues = !floatProps.includes(prop)
-            mappedVal[prop] = [
-                interpolate(range, val[0], roundValues),
-                interpolate(range, val[1], roundValues),
-            ]
-        })
-        return mappedVal
+    return inputs.map(({ alphaDecayFn = "", name, src, weight, width, height, ...rest }) => {
+        const kinematicProps = mapToWorldValues(rest)
+        return { alphaDecayFn, weight, imgUrl: src, frame: name, width, height, ...kinematicProps }
     })
 }
