@@ -15,7 +15,8 @@ export default () => {
         blendMode,
         distribution,
         numOfParticles,
-        loop
+        loop,
+        debug
     }, updateSettings } = useContext(AppContext)
     return (
         <Panel className={styles.sidePanel}>
@@ -50,12 +51,16 @@ export default () => {
                             </Space>
                         </Space>
                     </div>
-                    <div>
+                    <Space>
                         <Space>
                             <Text type="secondary">Loop</Text>
                             <Switch checked={loop} onChange={checked => updateSettings({ loop: checked })}/>
                         </Space>
-                    </div>
+                        <Space>
+                            <Text type="secondary">debug</Text>
+                            <Switch checked={debug} onChange={checked => updateSettings({ debug: checked })}/>
+                        </Space>
+                    </Space>
                     <AxnBtn />
             </Space>
             </div>

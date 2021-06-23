@@ -1,9 +1,3 @@
-const sign = num => {
-    if (num === 0) {
-        return 0
-    }
-    return num / Math.abs(num)
-}
 
 const clamp = (from = 0, to = 1, num) => Math.min(to, Math.max(from, num))
 

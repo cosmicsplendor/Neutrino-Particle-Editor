@@ -25,16 +25,18 @@ const initialSettings = {
     blendMode:"source-over",
     distribution: distributions[distributions.length - 1],
     numOfParticles: 40,
-    loop: false
+    loop: false,
+    debug: false
 }
 
 export default () => {
     const [ blendMode, setBlendMode ] = useState(initialSettings.blendMode)
     const [ distribution, setDistribution ] = useState(initialSettings.distribution)
     const [ loop, setLoop ] = useState(initialSettings.loop)
+    const [ debug, setDebug ] = useState(initialSettings.debug)
     const [ numOfParticles, setNumOfParticles ] = useState(initialSettings.numOfParticles)
 
-    const updateSettings = useCallback(({ blendMode, distribution, loop, numOfParticles }) => {
+    const updateSettings = useCallback(({ blendMode, distribution, loop, debug, numOfParticles }) => {
         if (!!blendMode) {
             return setBlendMode(blendMode)
         }
@@ -44,14 +46,17 @@ export default () => {
         if (typeof loop !== "undefined" && typeof loop !== "null") {
             return setLoop(loop)
         }
+        if (typeof debug !== "undefined" && typeof debug !== "null") {
+            return setDebug(debug)
+        }
         if (!!numOfParticles) {
             return setNumOfParticles(numOfParticles)
         }
     }, [])
 
     const settings = useMemo(() => {
-        return { blendMode, distribution, loop, numOfParticles }
-    }, [ blendMode, distribution, loop, numOfParticles])
+        return { blendMode, distribution, loop, numOfParticles, debug }
+    }, [ blendMode, distribution, loop, numOfParticles, debug ])
 
     return [
         settings,

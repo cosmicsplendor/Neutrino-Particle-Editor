@@ -3,7 +3,7 @@ import Canvas2DRenderer from "./renderer/Canvas2D"
 import startGameLoop from "./utils/startGameLoop"
 import ParticleEmitter from "./ParticleEmitter"
 import mapSliderInputsToParams from "../../../helpers/mapSliderInputsToParams"
-import calcBounds from "../../../helpers/calcBounds"
+import calcEmitterBounds from "../../../helpers/calcEmitterBounds"
 
 class ParticleRenderer {
     constructor(canvasId, updateFrequency = 1) {
@@ -24,8 +24,8 @@ class ParticleRenderer {
         this.dirty = false
         this.lastUpdated = this.timeSinceStart
         const mappedParams = mapSliderInputsToParams(params)
-        const hitbox = calcBounds(mappedParams)
-        const newEmitter = new ParticleEmitter({ params: mappedParams, hitbox, ...rest })
+        const { x, y} = calcEmitterBounds(mappedParams)
+        const newEmitter = new ParticleEmitter({ params: mappedParams, hitbox: { pos: { x: x.min, y: y.min }, width: x.max - x.min, height: y.max - y.min }, ...rest })
         newEmitter.pos.x = this.renderer.canvas.width / 2
         newEmitter.pos.y = this.renderer.canvas.height / 2
         this.rootNode.children.length = 0

@@ -29,7 +29,7 @@ export default () => {
             randomDistribution: settings.distribution === "random",
             params: imports
         })
-    }, [ settings.blendMode, settings.distribution, settings.numOfParticles, imports ])
+    }, [ settings.blendMode, settings.distribution, settings.debug, settings.numOfParticles, imports ])
 
     return (
        <div className={styles.preview} ref={previewContainerRef}>

@@ -1,4 +1,5 @@
 import * as types from "../entities/core/types"
+import Rect from "../entities/core/Rect"
 
 class Canvas2DRenderer {
     constructor({ canvasId, canvas, scene }) {
@@ -49,6 +50,9 @@ class Canvas2DRenderer {
         this.render(node)
         for (const childNode of node.children) {
             this.renderRecursively(childNode)
+        }
+        if (node.debug) {
+            this.render(new Rect(node.hitbox))
         }
         this.ctx.restore()
     }

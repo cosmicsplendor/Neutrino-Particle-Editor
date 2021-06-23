@@ -4,7 +4,7 @@ import { rand, randf, pickOne } from "./utils/math"
 import Movement from "./utils/Movement"
 
 class Particle extends Texture {
-    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn = x => 1 - x, loop }) {
+    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn , loop }) {
         super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
@@ -37,17 +37,12 @@ class Particle extends Texture {
     }
 }
 
-/**
- * const types = [
- *     { frame, offsetX = 0, offsetY = 0, lifetime: [ 2, 5 ], velX, velY, accX, accY, alpha, alphaEasingFn, weight = 1 },
- *     { frame, offsetX = 0, offsetY = 0, lifetime: [ 4, 8 ], velX, velY, accX, accY, alpha, alphaEasingFn, weight = 1 },
- * ]
- */
-
 class ParticleEmitter extends Node {
-    constructor({ size, blendMode, randomDistribution = true, params, ...nodeProps }) {
+    constructor({ size, blendMode, randomDistribution = true, hitbox, debug, params, ...nodeProps }) {
         super({ ...nodeProps })
         this.blendMode = blendMode
+        this.debug = debug
+        this.hitbox = hitbox
         let paramIndices
         if (randomDistribution) {
             paramIndices = params.reduce((distribution, param, index) => {

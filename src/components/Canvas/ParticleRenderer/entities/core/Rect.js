@@ -2,7 +2,7 @@ import Node from "../Node"
 import { rect } from "./types"
 
 class Rect extends Node {
-    constructor({ width, height, fill = "#000000", stroke, ...nodeProps }) {
+    constructor({ width, height, fill = "rgba(0, 0, 0, 0)", stroke = "red", ...nodeProps }) {
         super({ ...nodeProps })
         this.width = width
         this.height = height
