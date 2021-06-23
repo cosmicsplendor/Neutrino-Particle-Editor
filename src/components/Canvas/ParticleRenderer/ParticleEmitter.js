@@ -1,10 +1,10 @@
 import Node from "./entities/Node"
 import Texture from "./entities/core/Texture"
-import { rand, randf, pickOne } from "./utils/math"
+import { rand, randf, pickOne, easingFns } from "./utils/math"
 import Movement from "./utils/Movement"
 
 class Particle extends Texture {
-    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaEasingFn , loop }) {
+    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn , loop }) {
         super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
@@ -12,7 +12,7 @@ class Particle extends Texture {
         this.alpha0 = alpha
         this.pos0 = { ...pos }
         this.alpha = alpha
-        this.alphaEasingFn = alphaEasingFn
+        this.alphaDecayFn = alphaDecayFn
         this.elapsed = 0
         this.loop = loop
         Movement.makeMovable(this, { velX, velY, accX, accY })
@@ -31,8 +31,8 @@ class Particle extends Texture {
             this.reset()
         }
         Movement.update(this, dt)
-        if (this.alphaEasingFn) {
-            this.alpha = this.alphaEasingFn(this.elapsed / this.lifetime)
+        if (this.alphaDecayFn) {
+            this.alpha = 1 - easingFns[this.alphaDecayFn](this.elapsed / this.lifetime)
         }
     }
 }
@@ -71,7 +71,7 @@ class ParticleEmitter extends Node {
                 accX: Array.isArray(param.accX) ? rand(param.accX[0], param.accX[1]): param.accX,
                 accY: Array.isArray(param.accY) ? rand(param.accY[0], param.accY[1]): param.accY,
                 alpha: Array.isArray(param.alpha) ? randf(param.alpha[0], param.alpha[1]): param.alpha,
-                alphaEasingFn: param.alphaEasingFn,
+                alphaDecayFn: param.alphaDecayFn,
                 loop: true
             }
             this.add(new Particle(deserializedParam))

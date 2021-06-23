@@ -17,6 +17,9 @@ export const stripFloat = (num, place) => Math.floor(num * place) / place
 export const roundFloat = (num, place) => Math.round(num * place) / place
 
 export const easingFns = {
+    linear(x) {
+        return x
+    },
     quadIn(x) {
         return  x * x
     },
