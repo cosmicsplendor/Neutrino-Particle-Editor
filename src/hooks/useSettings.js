@@ -23,9 +23,9 @@ export const distributions = [
 
 const initialSettings = {
     blendMode:"source-over",
-    distribution: distributions[distributions.length - 1],
+    distribution: "random",
     numOfParticles: 40,
-    loop: false,
+    loop: true,
     debug: false
 }
 

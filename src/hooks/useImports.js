@@ -3,7 +3,7 @@ import * as importAxnTypes from "../constants/actionTypes/imports"
 import { v4 } from "uuid"
 
 export const initialProperties = { 
-    offsetX: [ 50, 50 ], offsetY: [ 50, 50 ], lifetime: [ 10, 20 ], velX: [ 30,70 ], velY: [ 30,70 ], accX: [ 50, 50 ], accY: [ 50, 50 ], alpha: [ 90, 100 ], alphaDecayFn: "", rotation: [ 50, 50 ], angularVel: [ 50, 50 ], weight: 1
+    offsetX: [ 50, 50 ], offsetY: [ 50, 50 ], lifetime: [ 10, 20 ], velX: [ 50, 50 ], velY: [ 50, 50 ], accX: [ 50, 50 ], accY: [ 50, 50 ], alpha: [ 90, 100 ], alphaDecayFn: "", weight: 1
 }
 
 export const alphaDecayFns = [

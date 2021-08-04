@@ -87,8 +87,6 @@ export default () => {
                     <ParticleProperty activeSpriteID={activeSpriteID} name="velY" label="velocityY" value={velY} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="accX" label="gravityX" value={accX} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="accY" label="gravityY" value={accY} update={importAxns.update} disabled={inputsDisabled}/>
-                    <ParticleProperty activeSpriteID={activeSpriteID} name="rotation" value={rotation} update={importAxns.update} disabled={inputsDisabled}/>
-                    <ParticleProperty activeSpriteID={activeSpriteID} name="angularVel" value={angularVel} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="alpha" value={alpha} update={importAxns.update} disabled={inputsDisabled}/>
                 </Space>
             </Space>
