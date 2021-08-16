@@ -1,9 +1,10 @@
-import { useContext, useMemo, useCallback } from "react"
-import { Space, notification, Typography, Input, Select, InputNumber } from "antd"
+import { useContext, useMemo } from "react"
+import { Space, notification, Typography, Input, InputNumber } from "antd"
 
 import AppContext from ".././../AppContext"
-import { initialProperties as defaultProperties, alphaDecayFns } from "../../hooks/useImports"
+import { initialProperties as defaultProperties } from "../../hooks/useImports"
 import ParticleProperty from "./ParticleProperty"
+import OptionalProperty from "./OptionalProperty"
 import placeholderImg from "../../images/placeholder.png"
 import styles from "./style.css"
 import { HBOX_EDITOR_W, HBOX_EDITOR_IMG_W } from "../../constants"
@@ -18,7 +19,6 @@ const hitboxEditorImgStyle = {
 }
 
 const { Text } = Typography
-const { Option } = Select
 
 export default () => {
     const { activeSprite: activeSpriteID, imports, importAxns } = useContext(AppContext)
@@ -29,7 +29,7 @@ export default () => {
     const { 
         src: spriteImg, 
         name,
-        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn, rotation, angularVel, weight 
+        offsetX, offsetY, lifetime, velX, velY, easingX, easingY, alpha, alphaDecayFn, rotation, angularVel, weight 
     } = inputsDisabled ? defaultProperties: activeSprite
     return (
         <div className={styles.metaPanel}>
@@ -73,22 +73,19 @@ export default () => {
                     <Text type="secondary">distribution weight</Text>
                     <InputNumber value={weight} onChange={value => importAxns.update({ id: activeSpriteID, weight: value })} disabled={inputsDisabled}/>
                 </Space>
-                <Space direction="horizontal">
-                    <Text type="secondary">alpha decay function</Text>
-                    <Select value={alphaDecayFn} className={styles.select} onChange={value => importAxns.update({ id: activeSpriteID, alphaDecayFn: value })} size="large" disabled={inputsDisabled}>
-                        {alphaDecayFns.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
-                    </Select>
-                </Space>
+                    <OptionalProperty activeSpriteID={activeSpriteID} name="alphaDecayFn" label="alpha decay function" value={alphaDecayFn} update={importAxns.update} disabled={inputsDisabled}/>
+         
                 <Space direction="vertical" style={{ marginTop: "1em" }}>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="offsetX" value={offsetX} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="offsetY" value={offsetY} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="lifetime" value={lifetime} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="velX" label="velocityX" value={velX} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="velY" label="velocityY" value={velY} update={importAxns.update} disabled={inputsDisabled}/>
-                    <ParticleProperty activeSpriteID={activeSpriteID} name="accX" label="gravityX" value={accX} update={importAxns.update} disabled={inputsDisabled}/>
-                    <ParticleProperty activeSpriteID={activeSpriteID} name="accY" label="gravityY" value={accY} update={importAxns.update} disabled={inputsDisabled}/>
+
                     <ParticleProperty activeSpriteID={activeSpriteID} name="alpha" value={alpha} update={importAxns.update} disabled={inputsDisabled}/>
                 </Space>
+                <OptionalProperty activeSpriteID={activeSpriteID} name="easingX" value={easingX} label="easing X" update={importAxns.update} disabled={inputsDisabled}/>
+                <OptionalProperty activeSpriteID={activeSpriteID} name="easingY" value={easingY} label="easing Y" update={importAxns.update} disabled={inputsDisabled}/>
             </Space>
         </div>
     )

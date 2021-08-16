@@ -4,7 +4,7 @@ import { rand, randf, pickOne, easingFns } from "./utils/math"
 import Movement from "./utils/Movement"
 
 class Particle extends Texture {
-    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn , loop }) {
+    constructor({ imgUrl, pos, lifetime, velX, velY, alpha, alphaDecayFn, easingX, easingY, loop }) {
         super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
@@ -15,7 +15,10 @@ class Particle extends Texture {
         this.alphaDecayFn = alphaDecayFn
         this.elapsed = 0
         this.loop = loop
-        Movement.makeMovable(this, { velX, velY, accX, accY })
+        this.distX = velX * lifetime
+        this.distY = velY * lifetime
+        this.easingX = easingX
+        this.easingY = easingY
     }
     reset() {
         this.elapsed = 0
@@ -27,12 +30,14 @@ class Particle extends Texture {
     }
     update(dt) {
         this.elapsed += dt
+        const param = this.elapsed / this.lifetime
         if (this.elapsed > this.lifetime && this.loop) {
             this.reset()
         }
-        Movement.update(this, dt)
+        this.pos.x = this.pos0.x + this.distX * easingFns[this.easingX](param)
+        this.pos.y = this.pos0.y + this.distY * easingFns[this.easingY](param)
         if (this.alphaDecayFn) {
-            this.alpha = 1 - easingFns[this.alphaDecayFn](this.elapsed / this.lifetime)
+            this.alpha = 1 - easingFns[this.alphaDecayFn](param)
         }
     }
 }
@@ -68,10 +73,10 @@ class ParticleEmitter extends Node {
                 lifetime:  randf(param.lifetime[0], param.lifetime[1]),
                 velX:  rand(param.velX[0], param.velX[1]),
                 velY:  rand(param.velY[0], param.velY[1]),
-                accX:  rand(param.accX[0], param.accX[1]),
-                accY:  rand(param.accY[0], param.accY[1]),
                 alpha:  randf(param.alpha[0], param.alpha[1]),
                 alphaDecayFn: param.alphaDecayFn === "none" ? null: param.alphaDecayFn,
+                easingX: param.easingX === "none" ? "linear": param.easingX,
+                easingY: param.easingY === "none" ? "linear": param.easingY,
                 loop: true
             }
             this.add(new Particle(deserializedParam))

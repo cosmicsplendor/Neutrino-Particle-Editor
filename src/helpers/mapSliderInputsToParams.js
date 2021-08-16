@@ -35,8 +35,8 @@ export const mapToWorldValues = props => {
 }
 
 export default inputs => {
-    return inputs.map(({ alphaDecayFn = "", name, src, weight, width, height, ...rest }) => {
+    return inputs.map(({ alphaDecayFn = "", easingX, easingY, name, src, weight, width, height, ...rest }) => {
         const kinematicProps = mapToWorldValues(rest)
-        return { alphaDecayFn, weight, imgUrl: src, frame: name, width, height, ...kinematicProps }
+        return { alphaDecayFn, easingX, easingY, weight, imgUrl: src, frame: name, width, height, ...kinematicProps }
     })
 }
