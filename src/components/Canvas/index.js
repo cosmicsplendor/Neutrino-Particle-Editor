@@ -35,7 +35,7 @@ export default () => {
     return (
        <div className={styles.preview} style={{ background: bgColor }} ref={previewContainerRef}>
             <canvas style={{ display: !!imports.length ? "block": "none"}} className={styles.previewImg} id={PREVIEW_ID} />
-            <input value={"bgColor"} type="color" onChange={e => setBgColor(e.target.value)}/>
+            <input value={bgColor} type="color" onChange={e => setBgColor(e.target.value)}/>
        </div>
     )
 }
