@@ -1,6 +1,8 @@
 import { Slider, Typography, Space } from "antd"
 const { Text } = Typography
 
+import styles from "./style.css"
+
 const ParticleProperty = ({ disabled, activeSpriteID, name, label, value, update }) => {
     return (
         <Space direction="horizontal">

@@ -34,12 +34,6 @@ export const easingFns = {
     },
     smoothStep(x) {
         return x * x * (3 - 2 * x)
-    },
-    sin(x) {
-        return Math.sin(x * Math.PI * 2)
-    },
-    cos(x) {
-        return Math.cos(x * Math.PI * 2)
     }
 }
 
