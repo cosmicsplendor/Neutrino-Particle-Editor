@@ -6,10 +6,11 @@ import styles from "../style.css"
 import { PREVIEW_ID } from "../../constants"
 
 let particleRenderer = null
+const initialBgColor = localStorage.getItem("emitter-preview-bg-color") || "#333333"
 
 export default () => {
     const { settings, imports } = useContext(AppContext)
-    const [ bgColor, setBgColor ] = useState("#333333")
+    const [ bgColor, setBgColor ] = useState(initialBgColor)
     const previewContainerRef = useRef()
     
     useEffect(() => {
@@ -35,7 +36,10 @@ export default () => {
     return (
        <div className={styles.preview} style={{ background: bgColor }} ref={previewContainerRef}>
             <canvas style={{ display: !!imports.length ? "block": "none"}} className={styles.previewImg} id={PREVIEW_ID} />
-            <input value={bgColor} type="color" onChange={e => setBgColor(e.target.value)}/>
+            <input value={bgColor} type="color" onChange={e => {
+                setBgColor(e.target.value)
+                localStorage.setItem("emitter-preview-bg-color", e.target.value)
+            }}/>
        </div>
     )
 }
