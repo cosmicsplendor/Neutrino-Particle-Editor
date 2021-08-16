@@ -4,8 +4,8 @@ const paramsRange = Object.freeze({
     lifetime: [ 0, 10 ],
     velX: [ -100, 100 ],
     velY: [ -250, 250 ],
-    accX: [ - 250, 250 ],
-    accY: [ - 100, 100 ],
+    accX: [ - 500, 500 ],
+    accY: [ - 500, 500 ],
     alpha: [ 0, 1 ],
     rotation: [ 0, Math.PI * 2 ],
     angularVel: [ 0, Math.PI * 10 ]
