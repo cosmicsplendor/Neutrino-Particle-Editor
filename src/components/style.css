@@ -7,10 +7,8 @@
 .preview {
     flex: 1;
 }
-.previewImg {
+.previewCnv {
     background: transparent;
-    object-fit: scale-down;
-    object-position: 0 0;
 }
 .appbar {
     width: 90%;

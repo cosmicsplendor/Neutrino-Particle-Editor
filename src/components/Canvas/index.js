@@ -35,11 +35,11 @@ export default () => {
 
     return (
        <div className={styles.preview} style={{ background: bgColor }} ref={previewContainerRef}>
-            <canvas style={{ display: !!imports.length ? "block": "none"}} className={styles.previewImg} id={PREVIEW_ID} />
             <input value={bgColor} type="color" onChange={e => {
                 setBgColor(e.target.value)
                 localStorage.setItem("emitter-preview-bg-color", e.target.value)
             }}/>
+            <canvas style={{ display: !!imports.length ? "block": "none"}} className={styles.previewCnv} id={PREVIEW_ID} />
        </div>
     )
 }
