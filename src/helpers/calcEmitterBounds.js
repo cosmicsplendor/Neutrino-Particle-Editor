@@ -27,13 +27,13 @@ const calc1DBounds = (offset, vel, acc, lifetime, len) => {
         const inflexionTimeMax = clamp(0, maxLifetime, - maxVel / maxAcc)
         limits.push(projectOffset(maxOffset, maxVel, maxAcc, inflexionTimeMax))
     }
-
+    console.log(limits)
     const min = Math.min(...limits)
     const max = Math.max(...limits)
 
     return {
-        min: min - len,
-        max: max + len
+        min: min - len / 2,
+        max: max + len / 2
     }
 }
 

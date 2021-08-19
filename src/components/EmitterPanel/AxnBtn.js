@@ -24,10 +24,10 @@ export default () => {
         delete exports.numOfParticles
         delete exports.distribution
 
-        const body = JSON.stringify(exports, null, 1)
+        const body = JSON.stringify(exports)
         download.text({ 
-            body, name: `particle-data-${Date.now()}`, 
-            format: "json"
+            body, name: `particle-data`, 
+            format: "cson"
         })
     }, [ imports, settings ])
     
