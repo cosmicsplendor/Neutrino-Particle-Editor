@@ -29,7 +29,7 @@ export default () => {
     const { 
         src: spriteImg, 
         name,
-        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn, rotation, angularVel, weight 
+        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn, rotVel, weight 
     } = inputsDisabled ? defaultProperties: activeSprite
     return (
         <div className={styles.metaPanel}>
@@ -88,6 +88,7 @@ export default () => {
                     <ParticleProperty activeSpriteID={activeSpriteID} name="accX" label="gravityX" value={accX} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="accY" label="gravityY" value={accY} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="alpha" value={alpha} update={importAxns.update} disabled={inputsDisabled}/>
+                    <ParticleProperty activeSpriteID={activeSpriteID} name="rotVel" value={rotVel} update={importAxns.update} disabled={inputsDisabled}/>
                 </Space>
             </Space>
         </div>

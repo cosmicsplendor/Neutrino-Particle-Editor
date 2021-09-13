@@ -4,7 +4,7 @@ import { rand, randf, pickOne, easingFns } from "./utils/math"
 import Movement from "./utils/Movement"
 
 class Particle extends Texture {
-    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn , loop }) {
+    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn , rotVel, loop }) {
         super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
@@ -15,22 +15,37 @@ class Particle extends Texture {
         this.alphaDecayFn = alphaDecayFn
         this.elapsed = 0
         this.loop = loop
+        if (rotVel) {
+            this.rotVel = rotVel
+            this.rotation = 0
+            this.anchor = {
+                x: this.w / 2,
+                y: this.h / 2
+            }
+        }
         Movement.makeMovable(this, { velX, velY, accX, accY })
     }
-    reset() {
+    _reset() {
         this.elapsed = 0
         this.velX = this.velX0
         this.velY = this.velY0
         this.alpha = this.alpha0
         this.pos.x = this.pos0.x
         this.pos.y = this.pos0.y
+        if (this.rotVel) {
+            this.rotation = 0
+        }
     }
     update(dt) {
-        this.elapsed += dt
-        if (this.elapsed > this.lifetime && this.loop) {
-            this.reset()
+        if (this.elapsed > this.lifetime) {
+            if (!this.loop) { return }
+            this._reset()
         }
+        this.elapsed += dt
         Movement.update(this, dt)
+        if (this.rotVel) {
+            this.rotation += this.rotVel * dt
+        }
         if (this.alphaDecayFn) {
             this.alpha = 1 - easingFns[this.alphaDecayFn](this.elapsed / this.lifetime)
         }
@@ -71,6 +86,7 @@ class ParticleEmitter extends Node {
                 accX:  rand(param.accX[0], param.accX[1]),
                 accY:  rand(param.accY[0], param.accY[1]),
                 alpha:  randf(param.alpha[0], param.alpha[1]),
+                rotVel:  randf(param.rotVel[0], param.rotVel[1]),
                 alphaDecayFn: param.alphaDecayFn === "none" ? null: param.alphaDecayFn,
                 loop: true
             }
