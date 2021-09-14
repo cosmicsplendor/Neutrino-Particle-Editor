@@ -12,7 +12,6 @@ class Canvas2DRenderer {
         const { type, pos, scale, pivot, rotation, anchor } = node
         
         ctx.translate(pos.x, pos.y)
-        scale && ctx.translate(anchor.x, anchor.y)
         anchor && ctx.translate(anchor.x, anchor.y)
         rotation && ctx.rotate(rotation)
         anchor && ctx.translate(-anchor.x, -anchor.y)

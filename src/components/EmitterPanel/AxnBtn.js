@@ -23,6 +23,7 @@ export default () => {
         exports.size = exports.numOfParticles
         delete exports.numOfParticles
         delete exports.distribution
+        delete exports.debug
 
         const body = JSON.stringify(exports)
         download.text({ 
