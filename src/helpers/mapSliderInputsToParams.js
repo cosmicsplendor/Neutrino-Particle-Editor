@@ -8,7 +8,7 @@ const paramsRange = Object.freeze({
     accY: [ - 500, 500 ],
     alpha: [ 0, 1 ],
     rotation: [ 0, Math.PI * 2 ],
-    rotVel: [ -Math.PI * 10, Math.PI * 10 ]
+    rotVel: [ -Math.PI * 4, Math.PI * 4 ]
 })
 
 const floatProps = [ "alpha", "lifetime" ]
