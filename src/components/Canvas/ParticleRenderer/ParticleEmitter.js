@@ -18,9 +18,11 @@ class Particle extends Texture {
         if (rotVel) {
             this.rotVel = rotVel
             this.rotation = 0
-            this.anchor = {
-                x: this.w / 2,
-                y: this.h / 2
+            this.img.onload = () => {
+                this.anchor = {
+                    x: this.img.width / 2,
+                    y: this.img.height / 2
+                }
             }
         }
         Movement.makeMovable(this, { velX, velY, accX, accY })
