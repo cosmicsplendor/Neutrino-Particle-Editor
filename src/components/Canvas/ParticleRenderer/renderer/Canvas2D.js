@@ -13,6 +13,7 @@ class Canvas2DRenderer {
         
         ctx.translate(pos.x, pos.y)
         scale && ctx.translate(anchor.x, anchor.y)
+        anchor && ctx.translate(anchor.x, anchor.y)
         rotation && ctx.rotate(rotation)
         anchor && ctx.translate(-anchor.x, -anchor.y)
         pivot && ctx.translate(pivot.x, pivot.y)
