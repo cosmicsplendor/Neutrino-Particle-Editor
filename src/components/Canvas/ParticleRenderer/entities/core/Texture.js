@@ -6,6 +6,7 @@ export default class Texture extends Node {
         super({ ...nodeProps })
         this.img = new Image()
         this.img.src = imgUrl
+        
         this.type = texture
     }
 }

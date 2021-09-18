@@ -5,6 +5,7 @@ import Movement from "./utils/Movement"
 
 class Particle extends Texture {
     constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn , rotVel, loop }) {
+        console.log(alpha)
         super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
@@ -39,8 +40,8 @@ class Particle extends Texture {
         }
     }
     update(dt) {
-        if (this.elapsed > this.lifetime) {
-            if (!this.loop) { return }
+        if (this.elapsed >= this.lifetime) {
+            // if (!this.loop) { return }
             this._reset()
         }
         this.elapsed += dt
@@ -49,7 +50,7 @@ class Particle extends Texture {
             this.rotation += this.rotVel * dt
         }
         if (this.alphaDecayFn) {
-            this.alpha = 1 - easingFns[this.alphaDecayFn](this.elapsed / this.lifetime)
+            this.alpha = Math.max(0.1, 1 - easingFns[this.alphaDecayFn](this.elapsed / this.lifetime))
         }
     }
 }
