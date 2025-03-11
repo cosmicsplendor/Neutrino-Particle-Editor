@@ -29,7 +29,7 @@ export default () => {
     const { 
         src: spriteImg, 
         name,
-        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn, rotVel, weight, scale
+        offsetX, offsetY, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn, rotVel, weight, scaleDecayFn
     } = inputsDisabled ? defaultProperties: activeSprite
     return (
         <div className={styles.metaPanel}>
@@ -75,7 +75,13 @@ export default () => {
                 </Space>
                 <Space direction="horizontal">
                     <Text type="secondary">alpha decay function</Text>
-                    <Select value={alphaDecayFn} className={styles.select} onChange={value => importAxns.update({ id: activeSpriteID, alphaDecayFn: value })} size="large" disabled={inputsDisabled}>
+                    <Select value={alphaDecayFn} className={styles.select} onChange={value => importAxns.update({ id: activeSpriteID, alphaDecayFn: value })} size="small" disabled={inputsDisabled}>
+                        {alphaDecayFns.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
+                    </Select>
+                </Space>
+                <Space direction="horizontal">
+                    <Text type="secondary">scale decay function</Text>
+                    <Select value={scaleDecayFn} className={styles.select} onChange={value => importAxns.update({ id: activeSpriteID, scaleDecayFn: value })} size="small" disabled={inputsDisabled}>
                         {alphaDecayFns.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
                     </Select>
                 </Space>
@@ -89,7 +95,6 @@ export default () => {
                     <ParticleProperty activeSpriteID={activeSpriteID} name="accY" label="gravityY" value={accY} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="alpha" value={alpha} update={importAxns.update} disabled={inputsDisabled}/>
                     <ParticleProperty activeSpriteID={activeSpriteID} name="rotVel" value={rotVel} update={importAxns.update} disabled={inputsDisabled}/>
-                    <ParticleProperty activeSpriteID={activeSpriteID} name="scale" value={scale} update={importAxns.update} disabled={inputsDisabled}/>
                 </Space>
             </Space>
         </div>

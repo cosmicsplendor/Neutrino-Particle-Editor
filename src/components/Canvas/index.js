@@ -24,6 +24,7 @@ export default () => {
     useEffect(() => {
         if (!particleRenderer) { particleRenderer = new ParticleRenderer(PREVIEW_ID) }
         if (imports.length === 0) { return }
+        console.log(imports)
         particleRenderer.setParams({
             ...settings,
             distribution: null,

@@ -4,8 +4,7 @@ import { rand, randf, pickOne, easingFns } from "./utils/math"
 import Movement from "./utils/Movement"
 
 class Particle extends Texture {
-    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn , rotVel, loop }) {
-        console.log(alpha)
+    constructor({ imgUrl, pos, lifetime, velX, velY, accX, accY, alpha, alphaDecayFn, scaleDecayFn , rotVel, loop }) {
         super({ imgUrl, pos })
         this.lifetime = lifetime
         this.velX0 = velX
@@ -14,8 +13,12 @@ class Particle extends Texture {
         this.pos0 = { ...pos }
         this.alpha = alpha
         this.alphaDecayFn = alphaDecayFn
+        this.scaleDecayFn = scaleDecayFn
         this.elapsed = 0
         this.loop = loop
+        if (scaleDecayFn) {
+            this.scale = { x: 1, y: 1 }
+        }
         if (rotVel) {
             this.rotVel = rotVel
             this.rotation = 0
@@ -49,8 +52,14 @@ class Particle extends Texture {
         if (this.rotVel) {
             this.rotation += this.rotVel * dt
         }
+        const n = this.elapsed / this.lifetime
         if (this.alphaDecayFn) {
-            this.alpha = Math.max(0.1, 1 - easingFns[this.alphaDecayFn](this.elapsed / this.lifetime))
+            this.alpha = Math.max(0.1, 1 - easingFns[this.alphaDecayFn](n))
+        }
+        if (this.scaleDecayFn) {
+            const scale = Math.max(0.1, 1 - easingFns[this.scaleDecayFn](n))
+            this.scale.x = scale
+            this.scale.y = scale
         }
     }
 }
@@ -74,6 +83,7 @@ class ParticleEmitter extends Node {
                 return prevIndices.concat(Array(Math.round(size * (param.weight || 1) / sumOfWeights)).fill(index))
             }, [])
         }
+
         for (let i = 0; i < size; i++) {
             const index = randomDistribution ? pickOne(paramIndices): paramIndices[i]
             const param = params[index]
@@ -91,8 +101,7 @@ class ParticleEmitter extends Node {
                 alpha:  randf(param.alpha[0], param.alpha[1]),
                 rotVel:  randf(param.rotVel[0], param.rotVel[1]),
                 alphaDecayFn: param.alphaDecayFn === "none" ? null: param.alphaDecayFn,
-                fromScale: param.scale[1],
-                toString: param.scale[0],
+                scaleDecayFn: param.scaleDecayFn === "none" ? null: param.scaleDecayFn,
                 loop: true
             }
             this.add(new Particle(deserializedParam))

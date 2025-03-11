@@ -28,7 +28,7 @@ export default () => {
                     <div>
                         <Space direction="vertical">
                             <Text type="secondary">blend mode</Text>
-                            <Select value={blendMode} style={{ width: 150 }} onChange={value => updateSettings({ blendMode: value })} size="large">
+                            <Select value={blendMode} style={{ width: 150 }} onChange={value => updateSettings({ blendMode: value })} size="small">
                                 {blendModes.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
                             </Select>
                         </Space>
@@ -36,7 +36,7 @@ export default () => {
                     <div>
                         <Space direction="vertical">
                             <Text type="secondary">particle type distribution</Text>
-                            <Select value={distribution} className={styles.select} onChange={value => updateSettings({ distribution: value })}>
+                            <Select value={distribution} className={styles.select} onChange={value => updateSettings({ distribution: value })} size="small">
                                 {distributions.map((name, i) => <Option key={i} value={name}>{name}</Option>)}
                             </Select>
                         </Space>
@@ -47,7 +47,7 @@ export default () => {
                             <Space>
                                 <InputNumber className={styles.input} value={numOfParticles} onChange={value => {
                                     updateSettings({ numOfParticles: Number.parseInt(value) || 0 })
-                                }}/>
+                                }} size="small"/>
                             </Space>
                         </Space>
                     </div>
