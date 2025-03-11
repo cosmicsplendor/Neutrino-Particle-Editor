@@ -91,6 +91,8 @@ class ParticleEmitter extends Node {
                 alpha:  randf(param.alpha[0], param.alpha[1]),
                 rotVel:  randf(param.rotVel[0], param.rotVel[1]),
                 alphaDecayFn: param.alphaDecayFn === "none" ? null: param.alphaDecayFn,
+                fromScale: param.scale[1],
+                toString: param.scale[0],
                 loop: true
             }
             this.add(new Particle(deserializedParam))
